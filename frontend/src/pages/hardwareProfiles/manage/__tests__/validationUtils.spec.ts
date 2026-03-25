@@ -9,6 +9,10 @@ import {
   nodeSelectorSchema,
   schedulingSchema,
 } from '#~/pages/hardwareProfiles/manage/validationUtils';
+import {
+  HARDWARE_PROFILE_DESCRIPTION_CHARACTER_LIMIT,
+  HARDWARE_PROFILE_DISPLAY_NAME_CHARACTER_LIMIT,
+} from '#~/pages/hardwareProfiles/manage/const';
 
 describe('manageHardwareProfileValidationSchema', () => {
   const validData = {
@@ -64,6 +68,42 @@ describe('manageHardwareProfileValidationSchema', () => {
     };
 
     const result = manageHardwareProfileValidationSchema.safeParse(invalidData);
+    expect(result.success).toBe(false);
+  });
+
+  it('should accept a display name at the character limit', () => {
+    const data = {
+      ...validData,
+      displayName: 'x'.repeat(HARDWARE_PROFILE_DISPLAY_NAME_CHARACTER_LIMIT),
+    };
+    const result = manageHardwareProfileValidationSchema.safeParse(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('should fail when display name exceeds the character limit', () => {
+    const data = {
+      ...validData,
+      displayName: 'x'.repeat(HARDWARE_PROFILE_DISPLAY_NAME_CHARACTER_LIMIT + 1),
+    };
+    const result = manageHardwareProfileValidationSchema.safeParse(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('should accept a description at the character limit', () => {
+    const data = {
+      ...validData,
+      description: 'x'.repeat(HARDWARE_PROFILE_DESCRIPTION_CHARACTER_LIMIT),
+    };
+    const result = manageHardwareProfileValidationSchema.safeParse(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('should fail when description exceeds the character limit', () => {
+    const data = {
+      ...validData,
+      description: 'x'.repeat(HARDWARE_PROFILE_DESCRIPTION_CHARACTER_LIMIT + 1),
+    };
+    const result = manageHardwareProfileValidationSchema.safeParse(data);
     expect(result.success).toBe(false);
   });
 

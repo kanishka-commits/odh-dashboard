@@ -12,6 +12,10 @@ import {
   ManageHardwareProfileSectionTitles,
 } from '#~/pages/hardwareProfiles/const';
 import {
+  HARDWARE_PROFILE_DESCRIPTION_CHARACTER_LIMIT,
+  HARDWARE_PROFILE_DISPLAY_NAME_CHARACTER_LIMIT,
+} from '#~/pages/hardwareProfiles/manage/const';
+import {
   getHardwareProfileDescription,
   getHardwareProfileDisplayName,
   isHardwareProfileEnabled,
@@ -157,6 +161,8 @@ const ManageHardwareProfile: React.FC<ManageHardwareProfileProps> = ({
                 data={profileNameDesc}
                 onDataChange={setProfileNameDesc}
                 dataTestId="hardware-profile-name-desc"
+                maxLength={HARDWARE_PROFILE_DISPLAY_NAME_CHARACTER_LIMIT}
+                maxLengthDesc={HARDWARE_PROFILE_DESCRIPTION_CHARACTER_LIMIT}
               />
             </FormSection>
             <HardwareProfileVisibilitySection
