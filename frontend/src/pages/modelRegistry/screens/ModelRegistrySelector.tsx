@@ -17,6 +17,7 @@ import {
 import text from '@patternfly/react-styles/css/utilities/Text/text';
 import truncateStyles from '@patternfly/react-styles/css/components/Truncate/truncate';
 import { InfoCircleIcon } from '@patternfly/react-icons';
+import { Link } from 'react-router-dom';
 import { useBrowserStorage } from '#~/components/browserStorage/BrowserStorageContext';
 import {
   getDescriptionFromK8sResource,
@@ -28,6 +29,9 @@ import WhosMyAdministrator from '#~/components/WhosMyAdministrator';
 import InlineTruncatedClipboardCopy from '#~/components/InlineTruncatedClipboardCopy';
 import ModelRegistrySelectIcon from '#~/images/icons/ModelRegistrySelectIcon';
 import { ModelRegistriesContext } from '#~/concepts/modelRegistry/context/ModelRegistriesContext';
+import { useAccessAllowed, verbModelAccess } from '#~/concepts/userSSAR';
+import { ModelRegistryModel } from '#~/api/models';
+import { modelRegistrySettingsRoute } from '#~/routes/modelRegistry/registryBase';
 import { getServerAddress } from './utils';
 
 const MODEL_REGISTRY_FAVORITE_STORAGE_KEY = 'odh.dashboard.model.registry.favorite';
@@ -49,6 +53,7 @@ const ModelRegistrySelector: React.FC<ModelRegistrySelectorProps> = ({
 }) => {
   const { modelRegistryServices, updatePreferredModelRegistry } =
     React.useContext(ModelRegistriesContext);
+  const [isAdmin] = useAccessAllowed(verbModelAccess('create', ModelRegistryModel));
   const selection = modelRegistryServices.find((mr) => mr.metadata.name === modelRegistry);
   const [favorites, setFavorites] = useBrowserStorage<string[]>(
     MODEL_REGISTRY_FAVORITE_STORAGE_KEY,
@@ -208,14 +213,20 @@ const ModelRegistrySelector: React.FC<ModelRegistrySelectorProps> = ({
         </FlexItem>
       )}
       <FlexItem align={{ default: 'alignRight' }}>
-        <WhosMyAdministrator
-          buttonLabel="Need another registry?"
-          headerContent="Need another registry?"
-          leadText="To request access to a new or existing model registry, contact your administrator."
-          contentTestId="model-registry-help-content"
-          linkTestId="model-registry-help-button"
-          popoverPosition={PopoverPosition.left}
-        />
+        {isAdmin ? (
+          <Link to={modelRegistrySettingsRoute()} data-testid="model-registry-settings-link">
+            Manage registries
+          </Link>
+        ) : (
+          <WhosMyAdministrator
+            buttonLabel="Need another registry?"
+            headerContent="Need another registry?"
+            leadText="To request access to a new or existing model registry, contact your administrator."
+            contentTestId="model-registry-help-content"
+            linkTestId="model-registry-help-button"
+            popoverPosition={PopoverPosition.left}
+          />
+        )}
       </FlexItem>
     </Flex>
   );
