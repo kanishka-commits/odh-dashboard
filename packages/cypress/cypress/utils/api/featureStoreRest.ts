@@ -17,7 +17,9 @@ export const getEntityCount = (routeUrl: string, project: string): Cypress.Chain
     })
     .then((response) => {
       if (response.status !== 200 || !response.body || !('entities' in response.body)) {
-        throw new Error(`Failed to get entity count: ${response.status}`);
+        throw new Error(
+          `Failed to get entity count: ${response.status} - ${JSON.stringify(response.body)}`,
+        );
       }
       const count = response.body.entities.length;
       cy.log(`Entity count: ${count}`);
@@ -44,7 +46,9 @@ export const getFeatureCount = (routeUrl: string, project: string): Cypress.Chai
     })
     .then((response) => {
       if (response.status !== 200 || !response.body || !('features' in response.body)) {
-        throw new Error(`Failed to get feature count: ${response.status}`);
+        throw new Error(
+          `Failed to get feature count: ${response.status} - ${JSON.stringify(response.body)}`,
+        );
       }
       const count = response.body.features.length;
       cy.log(`Feature count: ${count}`);
@@ -74,7 +78,9 @@ export const getFeatureViewCount = (
     })
     .then((response) => {
       if (response.status !== 200 || !response.body || !('featureViews' in response.body)) {
-        throw new Error(`Failed to get feature view count: ${response.status}`);
+        throw new Error(
+          `Failed to get feature view count: ${response.status} - ${JSON.stringify(response.body)}`,
+        );
       }
       const count = response.body.featureViews.length;
       cy.log(`Feature view count: ${count}`);
@@ -104,7 +110,10 @@ export const getFeatureServicesCount = (
     })
     .then((response) => {
       if (response.status !== 200 || !response.body || !('featureServices' in response.body)) {
-        throw new Error(`Failed to get feature service count: ${response.status}`);
+        throw new Error(
+          `Failed to get feature service count: ` +
+            `${response.status} - ${JSON.stringify(response.body)}`,
+        );
       }
       const count = response.body.featureServices.length;
       cy.log(`Feature service count: ${count}`);
@@ -134,7 +143,9 @@ export const getDataSourceCount = (
     })
     .then((response) => {
       if (response.status !== 200 || !response.body || !('dataSources' in response.body)) {
-        throw new Error(`Failed to get data source count: ${response.status}`);
+        throw new Error(
+          `Failed to get data source count: ${response.status} - ${JSON.stringify(response.body)}`,
+        );
       }
       const count = response.body.dataSources.length;
       cy.log(`Data source count: ${count}`);
@@ -161,7 +172,9 @@ export const getDatasetsCount = (routeUrl: string, project: string): Cypress.Cha
     })
     .then((response) => {
       if (response.status !== 200 || !response.body || !('savedDatasets' in response.body)) {
-        throw new Error(`Failed to get dataset count: ${response.status}`);
+        throw new Error(
+          `Failed to get dataset count: ${response.status} - ${JSON.stringify(response.body)}`,
+        );
       }
       const count = response.body.savedDatasets.length;
       cy.log(`Saved dataset count: ${count}`);
